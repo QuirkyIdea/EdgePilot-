@@ -176,13 +176,31 @@ class ABVIEdge(Scheduler):
         us = np.clip(self._rng.normal(u_mean, max(u_std, 1e-6), R), 0.0, 0.95)
         cs = np.clip(self._rng.normal(c_mean, max(c_std, 1e-6), R), 0.3, 8.0)
         pr = costs[loc_id][1]
-        acc = 0.0
-        for i in range(R):
-            t = self._deterministic_time(task, loc, us[i], cs[i])
-            met = t <= slack
-            cl = self._cost_from_time(task, t, slack, met, None, pr.expected_energy)
-            acc += min(cl, other_best)
-        exp_after = acc / R
+
+        # Vectorized equivalent of looping _deterministic_time / _cost_from_time
+        # over the R samples. us/cs are already the exact per-sample draws, so
+        # this yields the same expectation as the scalar loop it replaces.
+        link = (None if loc.loc_type == LocType.LOCAL
+                else self.env.link_for(task.device, loc.loc_id))
+        if loc.failed or loc.capacity <= 0 or (
+                loc.loc_type != LocType.LOCAL and link is None):
+            times = np.full(R, np.inf)
+        else:
+            compute = (task.demand / loc.capacity) / (1.0 - us)
+            if loc.loc_type == LocType.LOCAL:
+                times = compute
+            else:
+                c = np.maximum(cs, 0.3)
+                eff_bw = np.maximum(link.base_bw / c, 1e-3)
+                lat = link.base_latency * c
+                tx = (task.input_size + task.output_size) / eff_bw + 2 * lat
+                times = tx + compute
+
+        prio = 1.0 + (task.priority - 1) * 0.8
+        miss = (times > slack).astype(float)
+        cl = times + self.p.w_deadline * prio * miss * self.p.deadline_penalty \
+            + self.p.w_energy * pr.expected_energy
+        exp_after = float(np.mean(np.minimum(cl, other_best)))
         return max(baseline_best - exp_after, 0.0)
 
     # ----------------------------------------------------- shadow price
