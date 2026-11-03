@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EdgePilot — Project Status, Topic Explanation & Novelty</title>
+<style>
+  :root{
+    --ink:#1b2330; --muted:#5a6676; --line:#e2e7ee; --bg:#f6f8fb;
+    --brand:#15497a; --brand2:#2c7be5; --ok:#1a7f4b; --okbg:#e7f6ee;
+    --todo:#8a5a00; --todobg:#fdf3e0; --new:#6b2fb3; --newbg:#f1eafc;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 22px 80px;}
+  header.hero{background:linear-gradient(135deg,#123a63 0%,#2c7be5 100%);
+    color:#fff;padding:46px 22px 40px;margin-bottom:28px;
+    box-shadow:0 6px 24px rgba(20,60,120,.18);}
+  header.hero .wrap{padding-bottom:0}
+  .kicker{letter-spacing:.14em;text-transform:uppercase;font-size:12px;
+    opacity:.9;font-weight:600}
+  h1{font-size:30px;margin:8px 0 6px;line-height:1.2}
+  .sub{opacity:.95;font-size:17px;max-width:760px}
+  .meta{margin-top:16px;font-size:13.5px;opacity:.9}
+  .meta b{font-weight:600}
+  h2{font-size:22px;margin:38px 0 6px;color:var(--brand);
+    border-bottom:2px solid var(--line);padding-bottom:7px}
+  h3{font-size:17px;margin:22px 0 4px;color:var(--ink)}
+  p{margin:10px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:18px 20px;margin:16px 0;box-shadow:0 1px 3px rgba(20,40,80,.04)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .pill{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.03em;
+    padding:3px 10px;border-radius:999px;text-transform:uppercase}
+  .pill.done{background:var(--okbg);color:var(--ok)}
+  .pill.todo{background:var(--todobg);color:var(--todo)}
+  .pill.new{background:var(--newbg);color:var(--new)}
+  ul{margin:8px 0 8px 2px;padding-left:20px}
+  li{margin:5px 0}
+  .lead{font-size:17px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#eef3f9;color:var(--brand);font-weight:700}
+  tr:nth-child(even) td{background:#fafbfd}
+  .num{color:var(--brand2);font-weight:700}
+  .callout{border-left:4px solid var(--brand2);background:#eef5fe;
+    padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0}
+  .callout.warn{border-color:var(--todo);background:var(--todobg)}
+  .callout.novel{border-color:var(--new);background:var(--newbg)}
+  code{background:#eef1f5;padding:1.5px 5px;border-radius:5px;font-size:13px}
+  .progressbar{height:12px;background:#e6ebf2;border-radius:999px;overflow:hidden;margin:6px 0 2px}
+  .progressbar>span{display:block;height:100%;
+    background:linear-gradient(90deg,#1a7f4b,#39b56a)}
+  .legend{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .steps{counter-reset:step;list-style:none;padding-left:0}
+  .steps li{position:relative;padding:4px 0 4px 40px;margin:8px 0}
+  .steps li::before{counter-increment:step;content:counter(step);
+    position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;
+    background:var(--brand2);color:#fff;font-weight:700;font-size:13px;
+    display:flex;align-items:center;justify-content:center}
+  footer{color:var(--muted);font-size:13px;text-align:center;margin-top:46px;
+    border-top:1px solid var(--line);padding-top:18px}
+  .tag{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">UROP Project · Status &amp; Technical Brief</div>
+    <h1>EdgePilot — Adaptive Telemetry-Budgeted Intelligent Task Offloading</h1>
+    <div class="sub">A reproducible simulation study of <b>when to observe</b> and
+      <b>where to compute</b> in dynamic edge–cloud systems, driven by the
+      value of information under an explicit monitoring budget.</div>
+    <div class="meta">
+      <b>Student:</b> Saunaak Mukherji (AP23110010447) &nbsp;·&nbsp;
+      <b>Programme:</b> B.Tech CSE, SRM University–AP &nbsp;·&nbsp;
+      <b>Status date:</b> 2 November 2026
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ============ OVERVIEW ============ -->
+<h2>1. What this project is about</h2>
+<p class="lead">In one sentence: EdgePilot studies whether an edge scheduler can
+be smarter by treating <em>monitoring itself</em> as a costly, budgeted decision
+made jointly with the decision of where to run each task — instead of
+monitoring everything blindly or guessing from stale data.</p>
+
+<div class="card">
+<h3>The real-world problem</h3>
+<p>Edge computing places small servers close to users so that latency-sensitive
+apps (AR, industrial control, live analytics) don't have to reach a distant cloud.
+Every task a device creates raises the same question: <b>run it locally, on a
+nearby edge server, or in the cloud?</b> The best answer changes second-by-second
+because it depends on <b>live conditions</b> — how busy each edge server is,
+how much bandwidth a link has right now, whether a path is congested.</p>
+<p>There are two naive ways to deal with this, and both are bad:</p>
+<ul>
+  <li><b>Decide on stale information</b> → the scheduler offloads to a server
+  that <em>just</em> got congested, or keeps a task local when an edge had room.
+  Avoidable mistakes.</li>
+  <li><b>Monitor everything, all the time</b> → accurate, but every telemetry
+  message costs bandwidth, energy and CPU. At scale the <em>monitoring plane</em>
+  starts competing with the <em>data plane</em> it's meant to help.</li>
+</ul>
+<p>The core tension is therefore <b>decision quality vs. monitoring overhead</b>.
+EdgePilot asks: can the scheduler decide, moment by moment, <em>when observing is
+actually worth it?</em></p>
+</div>
+
+<div class="card">
+<h3>The idea &amp; the proposed algorithm — <span class="num">ABVI-Edge</span></h3>
+<p><b>ABVI-Edge</b> = <i>Adaptive Budgeted Value-of-Information Edge scheduler</i>.
+For every task it does two coupled things:</p>
+<ul>
+  <li><b>Where to place</b> the task (local / edge / cloud), and</li>
+  <li><b>Whether it is worth spending</b> a unit of a finite, shared telemetry
+  <b>budget</b> to refresh its view of a candidate before committing.</li>
+</ul>
+<p>A probe is bought <b>only</b> when its <b>Value of Information</b> (the expected
+reduction in decision cost from seeing the true state) — scaled by task
+<b>urgency</b> — exceeds an <b>adaptive shadow price</b> that paces the budget
+over time. This is deliberately smarter than a fixed rule like "refresh if
+staleness &gt; X", because it also asks <em>would refreshing actually change my
+decision?</em> A location that is stale but irrelevant, or relevant but already
+fresh, has near-zero value and is skipped. It uses <b>no machine learning / no
+training</b> — it's a transparent, white-box controller where every probe is
+justified by a logged number.</p>
+</div>
+
+<!-- ============ NOVELTY ============ -->
+<h2>2. Is the research topic unique?</h2>
+<div class="callout novel">
+<p><b>Yes — but the claim is stated narrowly and honestly.</b> A systematic
+survey of 20+ papers (2018–2026) shows five mature but <em>separate</em>
+research areas. None of them closes the loop the way EdgePilot does.</p>
+</div>
+<table>
+<tr><th>Existing research area</th><th>What it already solves</th><th>What it does <em>not</em> do</th></tr>
+<tr><td>Computation offloading / placement <span class="tag">(Wang 2020; firm-deadline MDP 2022; surveys 2023)</span></td>
+    <td>Optimise latency/energy/deadlines</td><td>Assumes the needed state is <em>already available</em> — ignores the cost of getting it</td></tr>
+<tr><td>Partial-observation offloading <span class="tag">(Badnava 2023; POMDP migration 2022; imperfect-CSI 2024)</span></td>
+    <td>Act well under incomplete state</td><td>Never <em>pays to acquire</em> more information</td></tr>
+<tr><td>Age of Information (AoI) <span class="tag">(2021–2022)</span></td>
+    <td>Keep a monitor fresh via transmission scheduling</td><td>Not coupled to any task-placement decision</td></tr>
+<tr><td>Value of Information (VoI) / observation scheduling <span class="tag">(2018, 2021, 2024)</span></td>
+    <td>Buy observations under a budget to improve a decision</td><td>Targets generic estimation/control — <em>not</em> offloading</td></tr>
+<tr><td>Adaptive network telemetry <span class="tag">(PINT 2020, LINT 2021, FineMon 2024, AdapINT 2024)</span></td>
+    <td>Cut monitoring overhead on the monitoring plane</td><td>Decoupled from the downstream placement decision</td></tr>
+</table>
+<p><b>The gap EdgePilot fills:</b> a <b>budget-constrained, VoI-driven</b> policy
+that <b>jointly</b> decides (a) which servers/links to probe with scarce telemetry
+and (b) where to place each task, in a dynamic, deadline-driven edge–cloud
+environment. The ingredients are known; their <b>joint, decision-coupled,
+budgeted integration for offloading</b> is the under-explored contribution.</p>
+<div class="callout">
+<b>Candid caveat (kept in the report):</b> VoI, AoI, budgeted sensing and
+partial-observation offloading are <em>not</em> individually new. If any paper is
+found combining all three pillars (offloading + telemetry budget + VoI
+acquisition), the contribution narrows to our specific <b>shadow-price pacing +
+urgency-weighted myopic-VoI</b> formulation and its empirical frontier — which
+is still concrete and reproducible.
+</div>
+
+<!-- ============ PROGRESS ============ -->
+<h2>3. What has been done so far</h2>
+<p>Overall completion against the original 10-phase master plan:</p>
+<div class="progressbar"><span style="width:92%"></span></div>
+<div class="legend">≈ 92% complete — scientific core, experiments, backend,
+dashboard and full documentation are done. Remaining items are extensions and
+hardening, not blockers.</div>
+
+<div class="grid">
+  <div class="card">
+    <span class="pill done">Done</span>
+    <h3>Research &amp; novelty</h3>
+    <ul>
+      <li>Systematic literature review (20+ papers) with per-paper
+      <em>verification levels</em> — no fabricated citations.</li>
+      <li><code>LITERATURE_REVIEW.md</code>, <code>PAPER_COMPARISON.csv</code>,
+      <code>RESEARCH_GAP.md</code>, <code>REFERENCES.bib</code>.</li>
+      <li>Candid novelty assessment + research questions + testable hypotheses.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="pill done">Done</span>
+    <h3>Formal problem model</h3>
+    <ul>
+      <li>Entities (20–50 devices, 3–10 edges, cloud), OU load &amp;
+      congestion dynamics, M/M/1 compute inflation.</li>
+      <li>Partial-observability belief with age-dependent Gaussian variance.</li>
+      <li>Explicit normalized telemetry budget β; objective + <b>scheduling
+      regret</b> vs. an omniscient oracle. (<code>PROBLEM_FORMULATION.md</code>)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="pill done">Done</span>
+    <h3>Algorithm (ABVI-Edge)</h3>
+    <ul>
+      <li>VoI via Monte-Carlo over the belief; adaptive budget shadow price;
+      urgency weighting; greedy sequential acquisition.</li>
+      <li>Pseudocode, O(P·K·R) complexity, parameters, edge-case handling,
+      5 ablation switches. (<code>ALGORITHM.md</code>)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="pill done">Done</span>
+    <h3>Simulator + 7 baselines</h3>
+    <ul>
+      <li>Discrete-event engine, 10 preset scenarios, reproducible seeds.</li>
+      <li>Baselines: local-only, cloud-only, random, nearest-edge,
+      lowest-est-time, periodic-telemetry, freshness-aware.</li>
+      <li><b>Fairness enforced by tests</b>: identical per-seed traces for all.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="pill done">Done</span>
+    <h3>Experiments &amp; statistics</h3>
+    <ul>
+      <li>12 experiments (A–L), 20 seeds each; raw + aggregated CSVs;
+      12 publication-quality figures.</li>
+      <li>Mean / std / 95% CI; paired Wilcoxon + t-test significance.</li>
+      <li>Full ablation isolating every component.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="pill done">Done</span>
+    <h3>Software, dashboard &amp; report</h3>
+    <ul>
+      <li>FastAPI backend + 50 pytest tests (reproducibility, constraints,
+      edge cases, algorithm).</li>
+      <li>React + TypeScript + Recharts dashboard — live sim output, nothing
+      hardcoded.</li>
+      <li><code>FINAL_RESEARCH_REPORT.md</code> + this UROP Word report.</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Headline measured results <span class="pill new">key evidence</span></h3>
+<table>
+<tr><th>Metric (medium scenario, 20 seeds)</th><th>ABVI-Edge</th><th>Best baseline</th><th>Improvement</th></tr>
+<tr><td>Avg. completion time</td><td class="num">0.326 s</td><td>0.361 s (periodic)</td><td>+9.8% &nbsp;<span class="tag">(p=2.4e-14)</span></td></tr>
+<tr><td>Deadline-violation rate</td><td class="num">0.010</td><td>0.034 (periodic)</td><td>+71.7% &nbsp;<span class="tag">(p=8e-12)</span></td></tr>
+<tr><td>Scheduling regret</td><td class="num">0.007 s</td><td>0.043 s (periodic)</td><td>+82.8% &nbsp;<span class="tag">(p=4e-19)</span></td></tr>
+<tr><td>vs. cloud-only (completion)</td><td class="num">0.326 s</td><td>0.479 s</td><td>+31.9%</td></tr>
+<tr><td>Telemetry used at β=1.0</td><td class="num">≈19% of reference</td><td>—</td><td>self-limits even with unlimited budget</td></tr>
+</table>
+<div class="callout"><b>The decisive finding (Experiment B):</b> from β ≥ 0.1,
+ABVI-Edge <b>dominates the quality-vs-overhead frontier</b> — better quality at
+<em>equal</em> monitoring spend than periodic/freshness telemetry, and it reaches
+operating points they never achieve. The ablation proves it is <b>smart
+allocation, not probe volume</b>: removing VoI spends <em>more</em> telemetry for
+<em>worse</em> results.</div>
+
+<!-- ============ WHAT'S NEW ============ -->
+<h2>4. What is genuinely new in this work</h2>
+<div class="card">
+<ul>
+  <li><span class="pill new">New</span> <b>Decision-coupled VoI for offloading.</b>
+  VoI is computed specifically as the expected reduction in the
+  <em>task-placement</em> decision cost — with an inner "would this flip the
+  decision?" test — not as generic estimation error.</li>
+  <li><span class="pill new">New</span> <b>Adaptive budget shadow price.</b> A
+  self-pacing price λ(t) that rises when budget is spent too fast and falls when
+  under-spending, automatically reserving budget for future, more valuable
+  decisions.</li>
+  <li><span class="pill new">New</span> <b>Urgency-weighted acquisition.</b> Tight
+  deadlines / high priority raise willingness to pay for information, linking
+  monitoring effort to task stakes.</li>
+  <li><span class="pill new">New</span> <b>Regret-as-a-lens evaluation.</b> Using
+  oracle-relative scheduling regret to <em>isolate the cost of stale information</em>
+  and show the mechanism directly — a clean empirical characterisation of the
+  quality/overhead frontier.</li>
+  <li><span class="pill new">New</span> <b>White-box, reproducible.</b> No RL, no
+  training; every decision is auditable and every result re-runnable from seeds.</li>
+</ul>
+</div>
+
+<!-- ============ WHAT'S LEFT ============ -->
+<h2>5. What is left to do</h2>
+<div class="grid">
+  <div class="card">
+    <span class="pill todo">To&nbsp;do · research depth</span>
+    <ul>
+      <li><b>Sequential (POMDP/RL) VoI</b> to replace the current <em>myopic,
+      single-step</em> estimate — value a probe by its effect on future
+      decisions too.</li>
+      <li><b>Closed-loop load model</b> so the scheduler's own placements feed
+      back into queue growth (currently load is exogenous / open-loop).</li>
+      <li><b>Correlated / batched probes</b> — exploit correlation between
+      neighbouring locations instead of pricing each probe independently.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="pill todo">To&nbsp;do · realism &amp; validation</span>
+    <ul>
+      <li><b>Real telemetry traces</b> instead of synthetic OU dynamics.</li>
+      <li><b>Hardware-in-the-loop</b> check of the <em>estimated</em> energy model.</li>
+      <li><b>Integrated-interval execution</b> (not just state at task arrival).</li>
+      <li><b>Fairness across devices</b> in the cost function.</li>
+    </ul>
+  </div>
+</div>
+<div class="callout warn"><b>Note:</b> none of these are needed for the central
+hypothesis, which is already supported. They increase realism/generality and are
+listed as <i>Future Work</i> in the report.</div>
+
+<!-- ============ HOW TO RUN ============ -->
+<h2>6. How to run / demonstrate</h2>
+<ol class="steps">
+  <li><b>Backend + experiments:</b> <code>cd backend</code> →
+  <code>pip install -r requirements.txt</code> →
+  <code>python run_experiments.py --seeds 20</code> (writes CSVs + figures to
+  <code>results/</code>).</li>
+  <li><b>Validation tests:</b> <code>pytest -q</code> (50 tests —
+  reproducibility, constraints, edge cases, algorithm).</li>
+  <li><b>API server:</b> <code>uvicorn app.main:app --reload --port 8000</code>
+  → docs at <code>http://127.0.0.1:8000/docs</code>.</li>
+  <li><b>Dashboard:</b> <code>cd frontend</code> → <code>npm install</code> →
+  <code>npm run dev</code> → <code>http://localhost:5173</code> (every chart is
+  live simulation output).</li>
+</ol>
+
+<h2>7. Deliverables map</h2>
+<table>
+<tr><th>Artifact</th><th>Location</th></tr>
+<tr><td>UROP report (Word, this submission)</td><td><code>EdgePilot_UROP_Report_Saunaak_Mukherji.docx</code></td></tr>
+<tr><td>Full research report</td><td><code>research/FINAL_RESEARCH_REPORT.md</code></td></tr>
+<tr><td>Literature review / gap / references</td><td><code>research/LITERATURE_REVIEW.md</code>, <code>RESEARCH_GAP.md</code>, <code>REFERENCES.bib</code></td></tr>
+<tr><td>Problem formulation &amp; algorithm</td><td><code>research/PROBLEM_FORMULATION.md</code>, <code>ALGORITHM.md</code></td></tr>
+<tr><td>Simulator + algorithm code</td><td><code>backend/edgepilot/</code></td></tr>
+<tr><td>Raw + processed results, figures</td><td><code>results/raw/</code>, <code>results/processed/</code>, <code>results/figures/</code></td></tr>
+<tr><td>Dashboard</td><td><code>frontend/</code></td></tr>
+</table>
+
+<footer>
+EdgePilot · UROP project status brief · Saunaak Mukherji (AP23110010447) ·
+SRM University–AP · generated 2 November 2026.<br>
+Honesty notes: energy is an <em>estimated</em> quantity (never a hardware
+measurement); background load is exogenous; "ABVI-Edge" is a working name, not a
+proven novelty claim.
+</footer>
+
+</div>
+</body>
+</html>
