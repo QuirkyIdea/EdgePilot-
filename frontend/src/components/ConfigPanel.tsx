@@ -16,7 +16,7 @@ export const DEFAULT_CFG: Cfg = {
   seed: 1,
   n_devices: 30,
   n_edges: 5,
-  sim_time: 150,
+  sim_time: 40,
   task_rate: 6,
   telemetry_budget: 0.3,
   load_mean: 0.5,
