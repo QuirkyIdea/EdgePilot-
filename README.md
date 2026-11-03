@@ -16,6 +16,11 @@ state before committing.
 
 No physical devices are needed: everything runs in a discrete-event simulator.
 
+> 🟢 **New to the topic?** Read **[GUIDE.md](GUIDE.md)** first — a plain-language,
+> beginner-friendly walkthrough of the problem, the algorithm and the results
+> (no prior edge-computing knowledge needed), written to help you explain the
+> project in your own words.
+
 ---
 
 ## What's inside
