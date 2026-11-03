@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+npm-debug.log*
+
+# OS / editor
+Thumbs.db
+.DS_Store
+~$*
+
+# Build / local artifacts
+*.log
+
+# Reports / documents (kept local, not pushed)
+*.docx
+*.pdf
